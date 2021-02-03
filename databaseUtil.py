@@ -22,6 +22,19 @@ class Util:
             # file_name = results['file_name']
         except Exception as e:
             logging.error(e)
-            return 'error'
+            return e
+        else:
+            return results
+
+    def getUserById(self, id):
+        try:
+            query = "SELECT username FROM app_users where id=%s and status=1"
+            logging.info(f"query --> {query}")
+            self.cursor.execute(query, id)
+            results = self.cursor.fetchone()
+            # file_name = results['file_name']
+        except Exception as e:
+            logging.error(e)
+            return e
         else:
             return results
