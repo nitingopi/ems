@@ -1,7 +1,7 @@
 import logging
 from flask import Flask, jsonify, request, Response
 from flask_bcrypt import Bcrypt
-
+from datetime import datetime
 from markupsafe import escape
 from flask_api import FlaskAPI, status
 # from flask_restful import Resource, Api
@@ -82,10 +82,12 @@ def create_user():
         # logging.info(f'entered try block')
         # logging.debug(f'{request}')
         # username = str(request.data.get('username',''))
-        # logging.info(f'username {username}')
+        # logging.info(f'query {username}')
+        now = datetime.now()
+        formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
         pw_hash = bcrypt.generate_password_hash(request.data.get('password')).decode('utf-8')
         msg = utilObj.insertUser(request.data.get('username'), request.data.get('name'),
-                                 request.data.get('email'), pw_hash )
+                                 request.data.get('email'), pw_hash , formatted_date, formatted_date)
     except Exception as e:
         logging.error(e)
         message = 'Error connecting to database'
@@ -103,8 +105,10 @@ def update_user():
         # logging.debug(f'{request}')
         # username = str(request.data.get('username',''))
         # logging.info(f'username {username}')
+        now = datetime.now()
+        formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
         msg = utilObj.updateUser(request.data.get('username'), request.data.get('name'),
-                                 request.data.get('email'), request.data.get('id'))
+                                 request.data.get('email'), request.data.get('id'), formatted_date)
     except Exception as e:
         logging.error(e)
         message = 'Error connecting to database'
